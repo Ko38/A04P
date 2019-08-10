@@ -1,0 +1,12 @@
+<form action="<%=link_url(@link)%>" method="POST">
+  <input type="hidden" name="_method" value="PATCH">
+  <input type="hidden" name="authenticity_token" value="<%=form_authenticity_token%>">
+  <label for="title"> Title:
+    <input id="title" name="link[title]" value="<%=@link.title%>">
+    </label>
+  <label for="url"> URL:
+    <input id="url" name="link[url]" value="<%=@link.url%>">
+  </label>
+  <input type="submit" value="Update Link">
+  <%=flash[:errors]%>
+  </form>

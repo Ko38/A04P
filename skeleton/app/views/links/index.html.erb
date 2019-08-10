@@ -1,0 +1,9 @@
+<% @links.each do |link|%>
+  <%= link.id%>
+  <%= link.user.username%>
+  <%= link.title%>
+  <%= link.url%>
+  <a href=<%= link_url(link)%>> <%= link.title%> </a>
+<% end %>
+
+<a href="<%= new_link_url%>" >New Link </a>

@@ -171,8 +171,10 @@ RSpec.describe LinksController, type: :controller do
       end
 
       it 'updates the link accordingly' do
+        updated_link = Link.find(jill_link.id)
+        print updated_link.title
         patch :update, params: { id: jill_link.id, link: { title: 'I is jill' } }
-
+        print updated_link.title
         updated_link = Link.find(jill_link.id)
         expect(updated_link.title).to eq('I is jill')
       end

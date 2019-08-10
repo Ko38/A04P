@@ -3,15 +3,15 @@ class CommentsController < ApplicationController
     if logged_in?
       comment_body = params[:comment][:body]
       link_id = params[:link_id]
+      link = Link.find_by(id: link_id)
       if comment_body == ""
-        flash[:errors] = "oh no"
-        redirect_to links_url
+        flash[:errors] = "Body can\'t be blank"
+        redirect_to link_url(link)
         return
       end
       comment = Comment.new(body: comment_body, user_id: current_user.id, link_id: link_id)
       comment.save!
 
-      link = Link.find_by(id: link_id)
       redirect_to link_url(link)
       return
     end

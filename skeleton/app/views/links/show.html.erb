@@ -1,0 +1,22 @@
+<%= @link.user.username%>
+<%= @link.title%>
+<%= @link.url%>
+<% @link.comments.each do |comment|%>
+  <%= comment.body %> 
+  <form action="<%=comment_url(comment)%>" method="POST">
+    <input type="hidden" name="authenticity_token" value="<%=form_authenticity_token%>">
+    <input type="hidden" name="_method" value="DELETE">
+    <input type="submit" value="Remove Comment">
+  </form>
+  <%end%>
+<a href="<%= links_url %>">Links </a>
+<a href="<%= edit_link_url %>">Edit Link </a>
+<h1> Add Comment</h1>
+<form action="<%=link_comments_url(@link)%>" method="POST">
+  <input type="hidden" name="authenticity_token" value="<%=form_authenticity_token%>">
+  <label for="body">Comment:
+    <input id="body" type="text" name="comment[body]">
+    </label>
+<%=flash[:errors]%>
+  <input type="submit" value="Add Comment">
+  </form>

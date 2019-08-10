@@ -1,6 +1,7 @@
 class LinksController < ApplicationController
   def index
     if logged_in? 
+      @links = Link.all
       render :index
       return
     end 
@@ -9,6 +10,7 @@ class LinksController < ApplicationController
   end
 
   def new
+    @link = Link.new
     if logged_in?
       render :new
       return
@@ -22,12 +24,11 @@ class LinksController < ApplicationController
 
       title = params[:link][:title]
       url = params[:link][:url]
-      if title && url
-        link = Link.new(user_id: current_user.id, title: title, url: url)
-        link.save!
-        redirect_to link_url(link)
+      @link = Link.new(user_id: current_user.id, title: title, url: url)
+      if @link.save
+        redirect_to link_url(@link)
       else
-        flash[:errors] = "oh no" 
+        flash[:errors] = "Url can\'t be blank" 
         render :new
       end
       return
@@ -61,11 +62,21 @@ class LinksController < ApplicationController
   end
 
   def update
+
     if logged_in? 
-      link = Link.find(params[:id])
-      if current_user.id == link.user_id 
-        link.title = params[:link][:title]
-        link.save!
+      @link = Link.find(params[:id])
+      if current_user.id == @link.user_id 
+        @link.title = params[:link][:title]
+        old_url = @link.url
+        @link.url = params[:link][:url]
+        @link.url ||= old_url
+        if @link.save
+          redirect_to link_url(@link)
+          return
+        else
+          flash[:errors] = "Edit Link #{@link.errors.full_messages}"
+          
+        end
       end
       render :edit
       return
